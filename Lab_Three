@@ -1,0 +1,76 @@
+ //Nathan Agyeman and Brandon Kibathi
+// 11/19/21 
+
+#define ENABLE 5
+#define DIRA 3
+#define DIRB 4
+#include <Wire.h>
+#include <DS3231.h>
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
+DS3231 clock;
+RTCDateTime dt;
+
+int i;
+const int buttonPin = 2;        //button press
+int buttonState = 0;
+int buttonPushCounter = 0;   // counter for the number of button presses         
+int lastButtonState = 0;     // previous state of the button
+ 
+
+void setup() {
+pinMode(ENABLE,OUTPUT);
+pinMode(DIRA,OUTPUT);
+pinMode(DIRB,OUTPUT);
+pinMode(buttonPin,INPUT_PULLUP);
+clock.setDateTime(__DATE__, __TIME__);
+lcd.begin(16,2);
+Serial.begin(9600);
+clock.begin();
+
+}
+
+void loop() {
+
+buttonState = digitalRead(buttonPin);
+dt = clock.getDateTime();
+lcd.setCursor(0,1);
+lcd.print(dt.hour);    lcd.print(":");
+lcd.print(dt.minute);  lcd.print(":");
+lcd.print(dt.second); 
+ if (buttonState != lastButtonState) {
+   if (buttonState == LOW) {
+     buttonPushCounter++;
+     Serial.println("on");
+     Serial.print("number of button pushes: ");
+     Serial.println(buttonPushCounter);
+          }
+     if (buttonPushCounter == 1) {
+            digitalWrite(ENABLE,HIGH);
+            digitalWrite(DIRA,HIGH); //forward 
+            digitalWrite(DIRB,LOW);
+            analogWrite(ENABLE,75); //half speed
+            delay(50);
+           lcd.clear();
+           lcd.print("C 1/2");
+           delay(500);
+                
+     }
+     if (buttonPushCounter == 2){
+        digitalWrite(ENABLE,HIGH);
+        digitalWrite(DIRA,LOW); // reverse 
+        digitalWrite(DIRB,HIGH);
+        analogWrite(ENABLE,75); //half speed
+        delay(50);
+        lcd.clear();
+       // lcd.setCursor(0,2);
+        lcd.print("CC 1/2");
+        delay(500);
+        buttonPushCounter = 0;
+     }
+   } 
+   
+   //delay(50);
+lastButtonState = buttonState;
+
+}
