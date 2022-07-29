@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @Nagyeman132
 - 👀 I’m interested in Computer Engineering & CyberSecurity 
-- 🌱 I’m currently learning Microprocessors and Ardunio 
+- 🌱 I’m currently learning Microprocessors and Python 
 - 💞️ I’m looking to collaborate on creating safer IT producures 
 - 📫 How to reach me nathan_agyeman@student.uml.edu
 
